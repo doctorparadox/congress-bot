@@ -5,7 +5,7 @@ exports.endpoint = function (request, response, done) {
   // Access properties off the request like headers, query or body:
   var repquery = request.query.text;
 
-  // Use the pre-initialized client to access your book (this returns a promise):
+  // Use the pre-initialized client to access your book:
 
  return client.list('legislators', {full_name: repquery}).then(function (congresspeople) {
     var congressperson = congresspeople[0];
@@ -18,7 +18,11 @@ exports.endpoint = function (request, response, done) {
      
     return {
       text: "Found information about Congressperson " + congressperson.full_name,
-          "response_type": "in_channel",
+      
+      // By default the bot's reply will be "ephemeral," meaning only you can see it in the channel. 
+      // If you want the whole channel to be able to see the results of your query, this'll do it,
+      // else you can comment it out to keep the return private.
+      "response_type": "in_channel",
       attachments: [{
         title: congressperson.full_name,
         title_link: congressperson.url,
